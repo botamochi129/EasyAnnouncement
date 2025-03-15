@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "easyannouncement",
+  "version": "${version}",
+  "name": "EasyAnnouncement",
+  "description": "EA supports easy announcement creation.",
+  "authors": [],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/easyannouncement/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "com.botamochi.easyannouncement.client.EasyannouncementClient"
+    ],
+    "main": [
+      "com.botamochi.easyannouncement.Easyannouncement"
+    ]
+  },
+  "mixins": [
+    "easyannouncement.mixins.json",
+    {
+      "config": "easyannouncement.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}

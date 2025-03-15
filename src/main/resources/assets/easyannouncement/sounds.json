@@ -1,0 +1,18 @@
+{
+  "mamonaku": {
+    "sounds": [
+      {
+        "name": "easyannouncement:mamonaku",
+        "stream": false
+      }
+    ]
+  },
+  "mairimasu": {
+    "sounds": [
+      {
+        "name": "easyannouncement:mairimasu",
+        "stream": false
+      }
+    ]
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "easyannouncement:block/announce_block"
+    }
+  }
+}
