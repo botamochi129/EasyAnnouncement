@@ -1,3 +1,7 @@
+# EasyAnnouncement ダウンロード
+## 1.19.2Fabric
+
+
 EasyAnnouncementでは、jsonも使い駅自動放送を流すことが出来ます。
 
 [使用方法]
