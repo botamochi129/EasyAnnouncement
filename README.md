@@ -39,6 +39,7 @@ EasyAnnouncementでは、jsonも使い駅自動放送を流すことが出来ま
 "soundId"で流す音声を指定します。
 "duration"には、その音声の長さ＋パーツの間隔の数字を入力します。小数対応です。
 "soundId"と"duration"を書いたものを複数書くと、上から順番に流れます。
+($track)にはホーム名、($routetype)には種別の英語部分、($boundfor)には行き先の英語部分が代入されます。
 
 2.記入したjsonファイルを、リソースパックとして読み込むには、<リソースパック名>/assets/easyannouncement/soundsに入れます。
 
