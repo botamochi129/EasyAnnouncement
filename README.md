@@ -7,34 +7,62 @@ EasyAnnouncementでは、jsonも使い駅自動放送を流すことが出来ま
 [使用方法]
 1.jsonファイルを作成し、下の例を参考に書きます。
 
-`{
-"sounds": [
     {
-      "soundId": "easyannouncement:mamonaku",
-      "duration": 1
-    },
-    {
-      "soundId": "easyannouncement:($track)",
-      "duration": 1
-    },
-    {
-      "soundId": "easyannouncement:($routetype)",
-      "duration": 1
-    },
-    {
-      "soundId": "easyannouncement:($boundfor)",
-      "duration": 2
-    },
-    {
-      "soundId": "easyannouncement:mairimasu",
-      "duration": 1.5
-    },
-    {
-      "soundId": "easyannouncement:kiiroisenn",
-      "duration": 1
+    
+    "sounds": [
+    
+        {
+        
+          "soundId": "easyannouncement:mamonaku",
+          
+          "duration": 1
+          
+        },
+        
+        {
+        
+          "soundId": "easyannouncement:($track)",
+          
+          "duration": 1
+          
+        },
+        
+        {
+        
+          "soundId": "easyannouncement:($routetype)",
+          
+          "duration": 1
+          
+        },
+        
+        {
+        
+          "soundId": "easyannouncement:($boundfor)",
+          
+          "duration": 2
+          
+        },
+        
+        {
+        
+          "soundId": "easyannouncement:mairimasu",
+          
+          "duration": 1.5
+          
+        },
+        
+        {
+        
+          "soundId": "easyannouncement:kiiroisenn",
+          
+          "duration": 1
+          
+        }
+        
+      ]
+      
     }
-  ]
-}`
+
 
 "sounds"は読み込むために必須の文言です。
 ファイル名に関係なく入れて下さい。
