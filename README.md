@@ -6,8 +6,9 @@ EasyAnnouncementでは、jsonも使い駅自動放送を流すことが出来ま
 
 [使用方法]
 1.jsonファイルを作成し、下の例を参考に書きます。
-{
-  "sounds": [
+
+`{
+"sounds": [
     {
       "soundId": "easyannouncement:mamonaku",
       "duration": 1
@@ -33,7 +34,8 @@ EasyAnnouncementでは、jsonも使い駅自動放送を流すことが出来ま
       "duration": 1
     }
   ]
-}
+}`
+
 "sounds"は読み込むために必須の文言です。
 ファイル名に関係なく入れて下さい。
 "soundId"で流す音声を指定します。
