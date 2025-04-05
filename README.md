@@ -1,5 +1,5 @@
 # EasyAnnouncement ダウンロード
-## [1.19.2-Fabric](https://github.com/botamochi129/EasyAnnouncement/releases/tag/1.19.2-Fabric)
+## [releases](https://github.com/botamochi129/EasyAnnouncement/releases)
 
 
 EasyAnnouncementでは、jsonも使い駅自動放送を流すことが出来ます。
