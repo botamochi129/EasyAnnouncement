@@ -7,9 +7,13 @@ import com.botamochi.easyannouncement.item.EATab;
 import com.botamochi.easyannouncement.network.AnnounceSendToClient;
 import com.botamochi.easyannouncement.registry.EASounds;
 import com.botamochi.easyannouncement.registry.EATile;
+import com.botamochi.easyannouncement.screen.EAScreenHandlers;
 import com.botamochi.easyannouncement.tile.AnnounceTile;
+import com.botamochi.easyannouncement.world.AnnounceTilePositionsSavedData;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.MapColor;
@@ -17,6 +21,8 @@ import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
@@ -26,18 +32,17 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-/**
- * Easyannouncement Mod のメインクラス。
- */
 public class Easyannouncement implements ModInitializer {
 
     public static String MOD_ID = "easyannouncement";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     // AnnounceTileが設置されている場所を追跡するセット
     private static final Set<BlockPos> announceTilePositions = new HashSet<>();
+    private static AnnounceTilePositionsSavedData savedData;
 
     public static Block EA_BLOCK = new AnnounceBlock(FabricBlockSettings.of(Material.GLASS).strength(6.0f, 6.0f).mapColor(MapColor.WHITE_GRAY).nonOpaque());
     public static BlockItem EA_BLOCKITEM = new BlockItem(EA_BLOCK, new Item.Settings().group(EATab.EA));
+    private MinecraftServer server;
 
     @Override
     public void onInitialize() {
@@ -48,8 +53,8 @@ public class Easyannouncement implements ModInitializer {
         // ブロックエンティティの登録
         EATile.init();
 
-        // サウンドの登録
-        EASounds.register();
+        //スクリーンハンドラーの登録
+        EAScreenHandlers.register();
 
         // イベントリスナーの登録
         PlatformSelectionEvent.EVENT.register(new AnnouncePlatformSelectionListener());
@@ -57,15 +62,21 @@ public class Easyannouncement implements ModInitializer {
         // サーバー側でパケットを受信する
         AnnounceSendToClient.register();
 
-        // AnnounceTileが設置されている位置を管理
+        ServerWorldEvents.LOAD.register((server, world) -> {
+            if (!world.isClient()) {
+                savedData = AnnounceTilePositionsSavedData.createAndLoad((ServerWorld) world);
+            }
+        });
+
         ServerTickEvents.END_SERVER_TICK.register(server -> {
             for (World world : server.getWorlds()) {
-                // すべてのAnnounceTileの位置に対してtickを呼び出す
-                for (BlockPos pos : announceTilePositions) {
-                    BlockEntity blockEntity = world.getBlockEntity(pos);
-                    if (blockEntity instanceof AnnounceTile) {
-                        AnnounceTile announceTile = (AnnounceTile) blockEntity;
-                        AnnounceTile.tick(world, pos, world.getBlockState(pos), announceTile);
+                if (!world.isClient() && savedData != null) {
+                    for (BlockPos pos : savedData.getPositions()) {
+                        BlockEntity blockEntity = world.getBlockEntity(pos);
+                        if (blockEntity instanceof AnnounceTile) {
+                            AnnounceTile announceTile = (AnnounceTile) blockEntity;
+                            AnnounceTile.tick(world, pos, world.getBlockState(pos), announceTile);
+                        }
                     }
                 }
             }
@@ -85,12 +96,14 @@ public class Easyannouncement implements ModInitializer {
 
     // AnnounceTileが設置される際に呼び出されるメソッド
     public static void registerAnnounceTilePosition(BlockPos pos) {
-        announceTilePositions.add(pos);
+        if (savedData != null) {
+            savedData.addPosition(pos);
+        }
     }
 
-    // AnnounceTileが削除される際に呼び出されるメソッド
     public static void unregisterAnnounceTilePosition(BlockPos pos) {
-        announceTilePositions.remove(pos);
+        if (savedData != null) {
+            savedData.removePosition(pos);
+        }
     }
-
 }

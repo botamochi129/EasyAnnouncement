@@ -18,10 +18,9 @@ public class EASounds {
 
     public static void register() {
         try {
-            // リソースパック内の sounds.json を読み込む
             InputStream stream = EASounds.class.getClassLoader().getResourceAsStream("assets/" + Easyannouncement.MOD_ID + "/sounds.json");
             if (stream == null) {
-                System.err.println("Failed to load sounds.json");
+                System.err.println("Failed to load default sounds.json");
                 return;
             }
             String json = IOUtils.toString(stream, StandardCharsets.UTF_8);
@@ -31,10 +30,8 @@ public class EASounds {
                 Identifier id = new Identifier(Easyannouncement.MOD_ID, key);
                 SoundEvent soundEvent = new SoundEvent(id);
                 SOUND_EVENTS.put(key, soundEvent);
-
-                // SoundEvent を登録
                 Registry.register(Registry.SOUND_EVENT, id, soundEvent);
-                System.out.println("Registered sound: " + id);
+                Easyannouncement.LOGGER.info("Registered default sound: " + id);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -43,5 +40,9 @@ public class EASounds {
 
     public static SoundEvent getSound(String name) {
         return SOUND_EVENTS.getOrDefault(name, null);
+    }
+
+    public static SoundEvent getSound(Identifier id) {
+        return Registry.SOUND_EVENT.getOrEmpty(id).orElse(null);
     }
 }

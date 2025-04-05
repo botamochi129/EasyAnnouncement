@@ -3,6 +3,7 @@ package com.botamochi.easyannouncement.block;
 import com.botamochi.easyannouncement.Easyannouncement;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.structure.rule.AxisAlignedLinearPosRuleTest;
@@ -55,6 +56,24 @@ public class AnnounceBlock extends BlockWithEntity {
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if (blockEntity instanceof AnnounceTile) {
             Easyannouncement.unregisterAnnounceTilePosition(pos);  // AnnounceTile の位置を登録解除
+        }
+    }
+
+    @Override
+    public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+        if (!state.isOf(newState.getBlock())) {
+            if (!world.isClient()) {
+                Easyannouncement.unregisterAnnounceTilePosition(pos);
+            }
+            super.onStateReplaced(state, world, pos, newState, moved);
+        }
+    }
+
+    @Override
+    public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
+        super.onPlaced(world, pos, state, placer, itemStack);
+        if (!world.isClient()) {
+            Easyannouncement.registerAnnounceTilePosition(pos);
         }
     }
 }

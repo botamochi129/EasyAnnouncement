@@ -1,0 +1,12 @@
+{
+  "sounds": [
+    {
+      "soundPath": "mamonaku",
+      "duration": 1
+    },
+    {
+      "soundPath": "mairimasu",
+      "duration": 0
+    }
+  ]
+}
